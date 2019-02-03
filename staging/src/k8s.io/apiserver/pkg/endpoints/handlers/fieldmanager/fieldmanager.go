@@ -29,6 +29,7 @@ import (
 	openapiproto "k8s.io/kube-openapi/pkg/util/proto"
 	"sigs.k8s.io/structured-merge-diff/fieldpath"
 	"sigs.k8s.io/structured-merge-diff/merge"
+	"sigs.k8s.io/structured-merge-diff/typed"
 )
 
 const applyManager = "apply"
@@ -51,6 +52,7 @@ func NewFieldManager(models openapiproto.Models, objectConverter runtime.ObjectC
 	if err != nil {
 		return nil, err
 	}
+
 	return &FieldManager{
 		typeConverter:   typeConverter,
 		objectConverter: objectConverter,
@@ -131,6 +133,11 @@ func (f *FieldManager) Update(liveObj, newObj runtime.Object, manager string) (r
 		return nil, fmt.Errorf("failed to update ManagedFields: %v", err)
 	}
 
+	managed, err = f.stripFields(newObjTyped, apiVersion, managed, manager)
+	if err != nil {
+		return nil, fmt.Errorf("failed to strip fields: %v", err)
+	}
+
 	if err := internal.EncodeObjectManagedFields(newObj, managed); err != nil {
 		return nil, fmt.Errorf("failed to encode managed fields: %v", err)
 	}
@@ -181,6 +188,11 @@ func (f *FieldManager) Apply(liveObj runtime.Object, patch []byte, force bool) (
 		return nil, err
 	}
 
+	managed, err = f.stripFields(newObjTyped, apiVersion, managed, manager)
+	if err != nil {
+		return nil, fmt.Errorf("failed to strip fields: %v", err)
+	}
+
 	newObj, err := f.typeConverter.TypedToObject(newObjTyped)
 	if err != nil {
 		return nil, fmt.Errorf("failed to convert new typed object to object: %v", err)
@@ -222,4 +234,29 @@ func (f *FieldManager) buildManagerInfo(prefix string, operation metav1.ManagedF
 		managerInfo.Manager = "unknown"
 	}
 	return internal.BuildManagerIdentifier(&managerInfo)
+}
+
+// stripSet is the list of fields that should never be part of a mangedFields.
+var stripSet = fieldpath.NewSet(
+	fieldpath.MakePathOrDie("metadata", "name"),
+	fieldpath.MakePathOrDie("metadata", "namespace"),
+	fieldpath.MakePathOrDie("metadata", "creationTimestamp"),
+	fieldpath.MakePathOrDie("metadata", "selfLink"),
+	fieldpath.MakePathOrDie("metadata", "uid"),
+)
+
+// stripFields removes a predefined set of paths found in typed from managed and returns the updated ManagedFields
+func (f *FieldManager) stripFields(typed typed.TypedValue, apiVersion fieldpath.APIVersion, managed fieldpath.ManagedFields, manager string) (fieldpath.ManagedFields, error) {
+	set, err := typed.ToFieldSet()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get fieldset: %v", err)
+	}
+
+	diff := set.Difference(stripSet)
+	managed[manager] = &fieldpath.VersionedSet{
+		Set:        diff,
+		APIVersion: apiVersion,
+	}
+
+	return managed, nil
 }
