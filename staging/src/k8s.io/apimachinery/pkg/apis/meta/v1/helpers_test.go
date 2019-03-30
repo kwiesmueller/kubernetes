@@ -190,6 +190,7 @@ func TestResetObjectMetaForStatus(t *testing.T) {
 	existingMeta.SetDeletionTimestamp(nil)
 	existingMeta.SetDeletionGracePeriodSeconds(nil)
 	existingMeta.SetInitializers(nil)
+	existingMeta.SetFieldManager("")
 
 	if !reflect.DeepEqual(meta, existingMeta) {
 		t.Error(diff.ObjectDiff(meta, existingMeta))

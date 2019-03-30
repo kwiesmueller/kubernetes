@@ -451,8 +451,30 @@ func TestApplyRequiresFieldManager(t *testing.T) {
 		Do().
 		Get()
 	if err != nil {
-		t.Fatalf("Apply failed to create with fieldManager: %v", err)
+		t.Fatalf("Apply failed to create with fieldManager option: %v", err)
 	}
+
+	obj = []byte(`{
+		"apiVersion": "v1",
+		"kind": "ConfigMap",
+		"metadata": {
+			"name": "test-cm",
+			"namespace": "default",
+			"fieldManager": "apply_test"
+		}
+	}`)
+
+	_, err = client.CoreV1().RESTClient().Patch(types.ApplyPatchType).
+		Namespace("default").
+		Resource("configmaps").
+		Name("test-cm").
+		Body(obj).
+		Do().
+		Get()
+	if err != nil {
+		t.Fatalf("Apply failed to create with manager field: %v", err)
+	}
+
 }
 
 // TestApplyRemoveContainerPort removes a container port from a deployment
@@ -884,5 +906,154 @@ func TestClearManagedFields(t *testing.T) {
 
 	if managedFields := accessor.GetManagedFields(); len(managedFields) != 0 {
 		t.Fatalf("Failed to clear managedFields, got: %v", managedFields)
+	}
+}
+
+// TestApplyDoesUseManagerField applies using the manager field and verifies it is being used in managedFields
+func TestApplyDoesUseManagerField(t *testing.T) {
+	defer featuregatetesting.SetFeatureGateDuringTest(t, utilfeature.DefaultFeatureGate, genericfeatures.ServerSideApply, true)()
+
+	_, client, closeFn := setup(t)
+	defer closeFn()
+
+	obj := []byte(`{
+		"apiVersion": "v1",
+		"kind": "ConfigMap",
+		"metadata": {
+			"name": "test-cm",
+			"namespace": "default",
+			"fieldManager": "apply_test"
+		},
+		"data": {
+			"test": "apply"
+		}
+	}`)
+
+	_, err := client.CoreV1().RESTClient().Patch(types.ApplyPatchType).
+		Namespace("default").
+		Resource("configmaps").
+		Name("test-cm").
+		Body(obj).
+		Do().
+		Get()
+	if err != nil {
+		t.Fatalf("Failed to create object using Apply patch: %v", err)
+	}
+
+	configmap, err := client.CoreV1().ConfigMaps("default").Get("test-cm", metav1.GetOptions{})
+	if err != nil {
+		t.Fatalf("Failed to retrieve object: %v", err)
+	}
+
+	accessor, err := meta.Accessor(configmap)
+	if err != nil {
+		t.Fatalf("Failed to get meta accessor: %v", err)
+	}
+
+	managed := accessor.GetManagedFields()
+	if managed == nil || len(managed) < 1 {
+		t.Fatalf("Object contains no managedFields: %v", configmap)
+	}
+
+	if managed[0].Manager != "apply_test" {
+		t.Fatalf("Expected manager to be apply_test, but got: %v", managed[0].Manager)
+	}
+
+	obj = []byte(`{
+			"metadata": {
+				"fieldManager": "update_test"
+			},
+			"data":{"test": "update"}
+		}`)
+
+	_, err = client.CoreV1().RESTClient().Patch(types.MergePatchType).
+		Namespace("default").
+		Resource("configmaps").
+		Name("test-cm").
+		Body(obj).Do().Get()
+	if err != nil {
+		t.Fatalf("Failed to patch object: %v", err)
+	}
+
+	configmap, err = client.CoreV1().ConfigMaps("default").Get("test-cm", metav1.GetOptions{})
+	if err != nil {
+		t.Fatalf("Failed to retrieve object: %v", err)
+	}
+
+	accessor, err = meta.Accessor(configmap)
+	if err != nil {
+		t.Fatalf("Failed to get meta accessor: %v", err)
+	}
+
+	managed = accessor.GetManagedFields()
+	if managed == nil || len(managed) < 1 {
+		t.Fatalf("Object contains no managedFields: %v", configmap)
+	}
+
+	if managed[0].Manager != "update_test" {
+		t.Fatalf("Expected manager to be update_test, but got: %v", managed[0].Manager)
+	}
+}
+
+// TestApplyDoesNotPersistManagerField applies using the manager field and verifies it does not get persisted
+func TestApplyDoesNotPersistManagerField(t *testing.T) {
+	defer featuregatetesting.SetFeatureGateDuringTest(t, utilfeature.DefaultFeatureGate, genericfeatures.ServerSideApply, true)()
+
+	_, client, closeFn := setup(t)
+	defer closeFn()
+
+	obj := []byte(`{
+		"apiVersion": "v1",
+		"kind": "ConfigMap",
+		"metadata": {
+			"name": "test-cm",
+			"namespace": "default",
+			"fieldManager": "apply_test"
+		}
+	}`)
+
+	_, err := client.CoreV1().RESTClient().Patch(types.ApplyPatchType).
+		Namespace("default").
+		Resource("configmaps").
+		Name("test-cm").
+		Body(obj).
+		Do().
+		Get()
+	if err != nil {
+		t.Fatalf("Failed to create object using Apply patch: %v", err)
+	}
+
+	configmap, err := client.CoreV1().ConfigMaps("default").Get("test-cm", metav1.GetOptions{})
+	if err != nil {
+		t.Fatalf("Failed to retrieve object: %v", err)
+	}
+
+	if len(configmap.ObjectMeta.FieldManager) > 0 {
+		t.Fatalf("Expected manager field to be unset, but got: %v - %v", configmap.ObjectMeta.FieldManager, configmap)
+	}
+
+	obj = []byte(`{
+			"metadata": {
+				"fieldManager": "update_test"
+			},
+			"data":{"test": "test"}
+		}`)
+
+	_, err = client.CoreV1().RESTClient().Patch(types.MergePatchType).
+		Namespace("default").
+		Resource("configmaps").
+		Name("test-cm").
+		Body(obj).Do().Get()
+	if err != nil {
+		t.Fatalf("Failed to patch object: %v", err)
+	}
+
+	configmap, err = client.CoreV1().ConfigMaps("default").Get("test-cm", metav1.GetOptions{})
+	if err != nil {
+		t.Fatalf("Failed to retrieve object: %v", err)
+	}
+
+	if len(configmap.ObjectMeta.FieldManager) > 0 {
+		t.Fatalf("Expected manager field to be unset, but got: %v", configmap.ObjectMeta.FieldManager)
 	}
 }

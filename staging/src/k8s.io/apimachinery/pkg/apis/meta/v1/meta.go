@@ -63,6 +63,8 @@ type Object interface {
 	SetOwnerReferences([]OwnerReference)
 	GetClusterName() string
 	SetClusterName(clusterName string)
+	GetFieldManager() string
+	SetFieldManager(name string)
 	GetManagedFields() []ManagedFieldsEntry
 	SetManagedFields(managedFields []ManagedFieldsEntry)
 }
@@ -176,6 +178,8 @@ func (meta *ObjectMeta) SetOwnerReferences(references []OwnerReference) {
 }
 func (meta *ObjectMeta) GetClusterName() string                 { return meta.ClusterName }
 func (meta *ObjectMeta) SetClusterName(clusterName string)      { meta.ClusterName = clusterName }
+func (meta *ObjectMeta) GetFieldManager() string                { return meta.FieldManager }
+func (meta *ObjectMeta) SetFieldManager(name string)            { meta.FieldManager = name }
 func (meta *ObjectMeta) GetManagedFields() []ManagedFieldsEntry { return meta.ManagedFields }
 func (meta *ObjectMeta) SetManagedFields(managedFields []ManagedFieldsEntry) {
 	meta.ManagedFields = managedFields

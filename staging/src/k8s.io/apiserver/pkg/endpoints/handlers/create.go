@@ -27,11 +27,13 @@ import (
 	"unicode/utf8"
 
 	"k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/api/meta"
 	metainternalversion "k8s.io/apimachinery/pkg/apis/meta/internalversion"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/validation"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/util/validation/field"
 	"k8s.io/apiserver/pkg/admission"
 	"k8s.io/apiserver/pkg/audit"
 	"k8s.io/apiserver/pkg/endpoints/handlers/negotiation"
@@ -145,7 +147,13 @@ func createHandler(r rest.NamedCreater, scope *RequestScope, admit admission.Int
 				return
 			}
 
-			obj, err = scope.FieldManager.Update(liveObj, obj, managerOrUserAgent(options.FieldManager, req.UserAgent()))
+			fieldManager, err := validFieldManager(obj, options.FieldManager)
+			if err != nil {
+				scope.err(fmt.Errorf("error while looking for default fieldManager (Create for %v): %v", scope.Kind, err), w, req)
+				return
+			}
+
+			obj, err = scope.FieldManager.Update(liveObj, obj, fieldManagerOrUserAgent(fieldManager, req.UserAgent()))
 			if err != nil {
 				scope.err(fmt.Errorf("failed to update object (Create for %v) managed fields: %v", scope.Kind, err), w, req)
 				return
@@ -196,10 +204,34 @@ func (c *namedCreaterAdapter) Create(ctx context.Context, name string, obj runti
 	return c.Creater.Create(ctx, obj, createValidatingAdmission, options)
 }
 
-// manager is assumed to be already a valid value, we need to make
-// userAgent into a valid value too.
-func managerOrUserAgent(manager, userAgent string) string {
-	if manager != "" {
+// validFieldManager takes the fieldManager from the passed in object and option to validate
+// the option and object fieldManager match if both are set
+func validFieldManager(obj runtime.Object, option string) (string, error) {
+	m, err := meta.Accessor(obj)
+	if err != nil {
+		return "", fmt.Errorf("couldn't get accessor: %v", err)
+	}
+
+	manager := m.GetFieldManager()
+	if len(manager) != 0 {
+		if errs := validation.ValidateFieldManager(manager, field.NewPath("fieldManager", "metadata")); len(errs) > 0 {
+			return "", errors.NewInvalid(schema.GroupKind{Group: metav1.GroupName, Kind: "ObjectMeta"}, "", errs)
+		}
+	}
+
+	if len(option) != 0 {
+		if len(manager) != 0 && option != manager {
+			return "", errors.NewBadRequest("the fieldManager of the provided object does not match the fieldManager sent on the request")
+		}
+
+		return option, nil
+	}
+
+	return manager, nil
+}
+
+func fieldManagerOrUserAgent(manager, userAgent string) string {
+	if len(manager) != 0 {
 		return manager
 	}
 	return prefixFromUserAgent(userAgent)

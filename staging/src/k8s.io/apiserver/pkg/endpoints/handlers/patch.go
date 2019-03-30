@@ -28,6 +28,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/meta"
 	metainternalversion "k8s.io/apimachinery/pkg/apis/meta/internalversion"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/validation"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -47,6 +48,7 @@ import (
 	"k8s.io/apiserver/pkg/util/dryrun"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	utiltrace "k8s.io/utils/trace"
+	"sigs.k8s.io/yaml"
 )
 
 const (
@@ -322,7 +324,11 @@ func (p *jsonPatcher) applyPatchToCurrentObject(currentObject runtime.Object) (r
 	}
 
 	if p.fieldManager != nil {
-		if objToUpdate, err = p.fieldManager.Update(currentObject, objToUpdate, managerOrUserAgent(p.options.FieldManager, p.userAgent)); err != nil {
+		fieldManager, err := validFieldManager(objToUpdate, p.options.FieldManager)
+		if err != nil {
+			return nil, fmt.Errorf("error while looking for default fieldManager: %v", err)
+		}
+		if objToUpdate, err = p.fieldManager.Update(currentObject, objToUpdate, fieldManagerOrUserAgent(fieldManager, p.userAgent)); err != nil {
 			return nil, fmt.Errorf("failed to update object (json PATCH for %v) managed fields: %v", p.kind, err)
 		}
 	}
@@ -389,7 +395,11 @@ func (p *smpPatcher) applyPatchToCurrentObject(currentObject runtime.Object) (ru
 	}
 
 	if p.fieldManager != nil {
-		if newObj, err = p.fieldManager.Update(currentObject, newObj, managerOrUserAgent(p.options.FieldManager, p.userAgent)); err != nil {
+		fieldManager, err := validFieldManager(newObj, p.options.FieldManager)
+		if err != nil {
+			return nil, fmt.Errorf("error while looking for default fieldManager: %v", err)
+		}
+		if newObj, err = p.fieldManager.Update(currentObject, newObj, fieldManagerOrUserAgent(fieldManager, p.userAgent)); err != nil {
 			return nil, fmt.Errorf("failed to update object (smp PATCH for %v) managed fields: %v", p.kind, err)
 		}
 	}
@@ -416,7 +426,26 @@ func (p *applyPatcher) applyPatchToCurrentObject(obj runtime.Object) (runtime.Ob
 	if p.fieldManager == nil {
 		panic("FieldManager must be installed to run apply")
 	}
-	return p.fieldManager.Apply(obj, p.patch, p.options.FieldManager, force)
+
+	patchObj := &unstructured.Unstructured{Object: map[string]interface{}{}}
+	if err := yaml.Unmarshal(p.patch, &patchObj); err != nil {
+		return nil, fmt.Errorf("error decoding YAML: %v", err)
+	}
+
+	if patchObj.GetAPIVersion() != p.kind.GroupVersion().String() {
+		return nil,
+			errors.NewBadRequest(
+				fmt.Sprintf("Incorrect version specified in apply patch. "+
+					"Specified patch version: %s, expected: %s",
+					patchObj.GetAPIVersion(), p.kind.GroupVersion().String()))
+	}
+
+	fieldManager, err := validFieldManager(patchObj, p.options.FieldManager)
+	if err != nil || len(fieldManager) == 0 {
+		return nil, fmt.Errorf("error while looking for default fieldManager: %v", err)
+	}
+
+	return p.fieldManager.Apply(obj, patchObj, fieldManager, force)
 }
 
 func (p *applyPatcher) createNewObject() (runtime.Object, error) {

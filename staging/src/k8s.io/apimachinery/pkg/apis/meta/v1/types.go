@@ -261,6 +261,21 @@ type ObjectMeta struct {
 	// +optional
 	ClusterName string `json:"clusterName,omitempty" protobuf:"bytes,15,opt,name=clusterName"`
 
+	// FieldManager is a name associated with the actor or entity that is responsible for the currently taking place
+	// interaction with the object.
+	// This field is write-only, non-persisted and optional.
+	// It is only used by the apiserver on create, apply and update operations, to set the ManagedFields accordingly.
+	// The value must be unset or less than or 128 characters long, and only contain printable characters, as defined by https://golang.org/pkg/unicode/#IsPrint.
+	//
+	// If the field is unset, the apiserver will default to the request user-agent.
+	// If the request contains the fieldManager option, it acts like this field.
+	// If both this field or the requests fieldManager option are set, but not equal the apply and non-apply operation will fail.
+	//
+	// This field is alpha and can be changed or removed without notice.
+	//
+	// +optional
+	FieldManager string `json:"fieldManager,omitempty" protobuf:"bytes,18,opt,name=fieldManager"`
+
 	// ManagedFields maps workflow-id and version to the set of fields
 	// that are managed by that workflow. This is mostly for internal
 	// housekeeping, and users typically shouldn't need to set or

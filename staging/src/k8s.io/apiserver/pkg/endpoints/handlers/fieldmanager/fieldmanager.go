@@ -20,10 +20,8 @@ import (
 	"fmt"
 	"time"
 
-	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apiserver/pkg/endpoints/handlers/fieldmanager/internal"
@@ -31,7 +29,6 @@ import (
 	openapiproto "k8s.io/kube-openapi/pkg/util/proto"
 	"sigs.k8s.io/structured-merge-diff/fieldpath"
 	"sigs.k8s.io/structured-merge-diff/merge"
-	"sigs.k8s.io/yaml"
 )
 
 // FieldManager updates the managed fields and merge applied
@@ -141,13 +138,14 @@ func (f *FieldManager) Update(liveObj, newObj runtime.Object, manager string) (r
 	if err := internal.EncodeObjectManagedFields(newObj, managed); err != nil {
 		return nil, fmt.Errorf("failed to encode managed fields: %v", err)
 	}
+	internal.RemoveObjectFieldManager(newObj)
 
 	return newObj, nil
 }
 
 // Apply is used when server-side apply is called, as it merges the
 // object and update the managed fields.
-func (f *FieldManager) Apply(liveObj runtime.Object, patch []byte, fieldManager string, force bool) (runtime.Object, error) {
+func (f *FieldManager) Apply(liveObj, patchObj runtime.Object, fieldManager string, force bool) (runtime.Object, error) {
 	// If the object doesn't have metadata, apply isn't allowed.
 	if _, err := meta.Accessor(liveObj); err != nil {
 		return nil, fmt.Errorf("couldn't get accessor: %v", err)
@@ -157,19 +155,6 @@ func (f *FieldManager) Apply(liveObj runtime.Object, patch []byte, fieldManager 
 	if err != nil {
 		return nil, fmt.Errorf("failed to decode managed fields: %v", err)
 	}
-	// Check that the patch object has the same version as the live object
-	patchObj := &unstructured.Unstructured{Object: map[string]interface{}{}}
-
-	if err := yaml.Unmarshal(patch, &patchObj.Object); err != nil {
-		return nil, fmt.Errorf("error decoding YAML: %v", err)
-	}
-	if patchObj.GetAPIVersion() != f.groupVersion.String() {
-		return nil,
-			errors.NewBadRequest(
-				fmt.Sprintf("Incorrect version specified in apply patch. "+
-					"Specified patch version: %s, expected: %s",
-					patchObj.GetAPIVersion(), f.groupVersion.String()))
-	}
 
 	liveObjVersioned, err := f.toVersioned(liveObj)
 	if err != nil {
@@ -177,7 +162,7 @@ func (f *FieldManager) Apply(liveObj runtime.Object, patch []byte, fieldManager 
 	}
 	internal.RemoveObjectManagedFields(liveObjVersioned)
 
-	patchObjTyped, err := f.typeConverter.YAMLToTyped(patch)
+	patchObjTyped, err := f.typeConverter.ObjectToTyped(patchObj)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create typed patch object: %v", err)
 	}
@@ -208,6 +193,7 @@ func (f *FieldManager) Apply(liveObj runtime.Object, patch []byte, fieldManager 
 	if err := internal.EncodeObjectManagedFields(newObj, managed); err != nil {
 		return nil, fmt.Errorf("failed to encode managed fields: %v", err)
 	}
+	internal.RemoveObjectFieldManager(newObj)
 
 	newObjVersioned, err := f.toVersioned(newObj)
 	if err != nil {
@@ -254,6 +240,7 @@ var stripSet = fieldpath.NewSet(
 	fieldpath.MakePathOrDie("metadata", "uid"),
 	fieldpath.MakePathOrDie("metadata", "clusterName"),
 	fieldpath.MakePathOrDie("metadata", "generation"),
+	fieldpath.MakePathOrDie("metadata", "fieldManager"),
 	fieldpath.MakePathOrDie("metadata", "managedFields"),
 	fieldpath.MakePathOrDie("metadata", "resourceVersion"),
 )

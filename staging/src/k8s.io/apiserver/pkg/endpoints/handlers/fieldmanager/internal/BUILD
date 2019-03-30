@@ -7,6 +7,7 @@ go_library(
         "fields.go",
         "gvkparser.go",
         "managedfields.go",
+        "manager.go",
         "pathelement.go",
         "typeconverter.go",
         "versionconverter.go",

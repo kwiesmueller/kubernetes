@@ -467,6 +467,18 @@ func (u *Unstructured) SetClusterName(clusterName string) {
 	u.setNestedField(clusterName, "metadata", "clusterName")
 }
 
+func (u *Unstructured) GetFieldManager() string {
+	return getNestedString(u.Object, "metadata", "fieldManager")
+}
+
+func (u *Unstructured) SetFieldManager(name string) {
+	if len(name) == 0 {
+		RemoveNestedField(u.Object, "metadata", "fieldManager")
+		return
+	}
+	u.setNestedField(name, "metadata", "fieldManager")
+}
+
 func (u *Unstructured) GetManagedFields() []metav1.ManagedFieldsEntry {
 	items, found, err := NestedSlice(u.Object, "metadata", "managedFields")
 	if !found || err != nil {

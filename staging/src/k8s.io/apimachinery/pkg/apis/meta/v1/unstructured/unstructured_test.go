@@ -116,6 +116,7 @@ func TestUnstructuredMetadataOmitempty(t *testing.T) {
 	u.SetInitializers(nil)
 	u.SetFinalizers(nil)
 	u.SetClusterName("")
+	u.SetFieldManager("")
 	u.SetManagedFields(nil)
 
 	gotMetadata, _, err := unstructured.NestedFieldNoCopy(u.UnstructuredContent(), "metadata")
@@ -159,5 +160,6 @@ func setObjectMetaUsingAccessors(u, uCopy *unstructured.Unstructured) {
 	uCopy.SetInitializers(u.GetInitializers())
 	uCopy.SetFinalizers(u.GetFinalizers())
 	uCopy.SetClusterName(u.GetClusterName())
+	uCopy.SetFieldManager(u.GetFieldManager())
 	uCopy.SetManagedFields(u.GetManagedFields())
 }

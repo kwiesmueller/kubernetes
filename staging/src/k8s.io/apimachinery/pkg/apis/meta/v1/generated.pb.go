@@ -1479,6 +1479,12 @@ func (m *ObjectMeta) MarshalTo(dAtA []byte) (int, error) {
 			i += n
 		}
 	}
+	dAtA[i] = 0x92
+	i++
+	dAtA[i] = 0x1
+	i++
+	i = encodeVarintGenerated(dAtA, i, uint64(len(m.FieldManager)))
+	i += copy(dAtA[i:], m.FieldManager)
 	return i, nil
 }
 
@@ -2500,6 +2506,8 @@ func (m *ObjectMeta) Size() (n int) {
 			n += 2 + l + sovGenerated(uint64(l))
 		}
 	}
+	l = len(m.FieldManager)
+	n += 2 + l + sovGenerated(uint64(l))
 	return n
 }
 
@@ -3022,6 +3030,7 @@ func (this *ObjectMeta) String() string {
 		`ClusterName:` + fmt.Sprintf("%v", this.ClusterName) + `,`,
 		`Initializers:` + strings.Replace(fmt.Sprintf("%v", this.Initializers), "Initializers", "Initializers", 1) + `,`,
 		`ManagedFields:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.ManagedFields), "ManagedFieldsEntry", "ManagedFieldsEntry", 1), `&`, ``, 1) + `,`,
+		`FieldManager:` + fmt.Sprintf("%v", this.FieldManager) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -7371,6 +7380,35 @@ func (m *ObjectMeta) Unmarshal(dAtA []byte) error {
 			if err := m.ManagedFields[len(m.ManagedFields)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		case 18:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FieldManager", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.FieldManager = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
