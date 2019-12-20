@@ -48,7 +48,10 @@ func NewStripMetaManager(fieldManager Manager) Manager {
 			fieldpath.MakePathOrDie("metadata", "clusterName"),
 			fieldpath.MakePathOrDie("metadata", "generation"),
 			fieldpath.MakePathOrDie("metadata", "managedFields"),
+			// TODO(kwiesmueller): use Remove method being added with https://github.com/kubernetes-sigs/structured-merge-diff/pull/133#pullrequestreview-329014134
+			// because the current stripFields does not allow to remove nested paths
 			fieldpath.MakePathOrDie("metadata", "options"),
+			fieldpath.MakePathOrDie("metadata", "options", "fieldManager"),
 			fieldpath.MakePathOrDie("metadata", "resourceVersion"),
 		),
 	}

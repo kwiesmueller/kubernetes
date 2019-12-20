@@ -1447,6 +1447,22 @@ func TestOptionsDoNotGetPersisted(t *testing.T) {
 	if options := accessor.GetOptions(); options != nil {
 		t.Fatalf("options should never be persisted, got: %v", options)
 	}
+
+	managedFields := accessor.GetManagedFields()
+	if len(managedFields) == 0 {
+		t.Fatal("Failed to get managedFields")
+	}
+
+	for _, fields := range managedFields {
+		managed := make(map[string]interface{})
+		json.Unmarshal(fields.FieldsV1.Raw, &managed)
+
+		if metadata, ok := managed["f:metadata"]; ok {
+			if _, ok := metadata.(map[string]interface{})["f:options"]; ok {
+				t.Fatalf("Apply should not own options: %v - %v", fields, managed)
+			}
+		}
+	}
 }
 
 var podBytes = []byte(`
