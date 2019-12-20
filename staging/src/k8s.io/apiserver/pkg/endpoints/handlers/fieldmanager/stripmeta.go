@@ -48,6 +48,7 @@ func NewStripMetaManager(fieldManager Manager) Manager {
 			fieldpath.MakePathOrDie("metadata", "clusterName"),
 			fieldpath.MakePathOrDie("metadata", "generation"),
 			fieldpath.MakePathOrDie("metadata", "managedFields"),
+			fieldpath.MakePathOrDie("metadata", "options"),
 			fieldpath.MakePathOrDie("metadata", "resourceVersion"),
 		),
 	}

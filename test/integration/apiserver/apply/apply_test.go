@@ -1365,6 +1365,90 @@ func TestUpdateUsesFieldManagerOption(t *testing.T) {
 
 }
 
+// TestOptionsDoNotGetPersisted .
+func TestOptionsDoNotGetPersisted(t *testing.T) {
+
+	_, client, closeFn := setup(t)
+	defer closeFn()
+
+	_, err := client.CoreV1().RESTClient().Patch(types.ApplyPatchType).
+		Namespace("default").
+		Resource("configmaps").
+		Name("test-cm").
+		Param("fieldManager", "declarative_apply_test").
+		Body([]byte(`{
+			"apiVersion": "v1",
+			"kind": "ConfigMap",
+			"metadata": {
+				"name": "test-cm",
+				"namespace": "default",
+				"options": {
+					"fieldManager": "declarative_apply_test"
+				}
+			},
+			"data": {
+				"key": "a"
+			}
+		}`)).
+		Do().
+		Get()
+	if err != nil {
+		t.Fatalf("Failed to create object using Apply patch: %v", err)
+	}
+
+	object, err := client.CoreV1().RESTClient().Get().Namespace("default").Resource("configmaps").Name("test-cm").Do().Get()
+	if err != nil {
+		t.Fatalf("Failed to retrieve object: %v", err)
+	}
+
+	accessor, err := meta.Accessor(object)
+	if err != nil {
+		t.Fatalf("Failed to get meta accessor: %v", err)
+	}
+
+	if options := accessor.GetOptions(); options != nil {
+		t.Fatalf("options should never be persisted, got: %v", options)
+	}
+
+	_, err = client.CoreV1().RESTClient().Put().
+		Namespace("default").
+		Resource("configmaps").
+		Name("test-cm").
+		Body([]byte(`{
+			"apiVersion": "v1",
+			"kind": "ConfigMap",
+			"metadata": {
+				"name": "test-cm",
+				"namespace": "default",
+				"options": {
+					"fieldManager": "declarative_apply_test"
+				}
+			},
+			"data": {
+				"key": "b"
+			}
+		}`)).
+		Do().
+		Get()
+	if err != nil {
+		t.Fatalf("Failed to update object: %v", err)
+	}
+
+	object, err = client.CoreV1().RESTClient().Get().Namespace("default").Resource("configmaps").Name("test-cm").Do().Get()
+	if err != nil {
+		t.Fatalf("Failed to retrieve object: %v", err)
+	}
+
+	accessor, err = meta.Accessor(object)
+	if err != nil {
+		t.Fatalf("Failed to get meta accessor: %v", err)
+	}
+
+	if options := accessor.GetOptions(); options != nil {
+		t.Fatalf("options should never be persisted, got: %v", options)
+	}
+}
+
 var podBytes = []byte(`
 apiVersion: v1
 kind: Pod

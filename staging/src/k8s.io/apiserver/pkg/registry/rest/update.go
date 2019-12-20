@@ -133,6 +133,9 @@ func BeforeUpdate(strategy RESTUpdateStrategy, ctx context.Context, obj, old run
 		objectMeta.SetDeletionGracePeriodSeconds(oldMeta.GetDeletionGracePeriodSeconds())
 	}
 
+	// options should never be stored
+	objectMeta.SetOptions(nil)
+
 	// Ensure some common fields, like UID, are validated for all resources.
 	errs, err := validateCommonFields(obj, old, strategy)
 	if err != nil {

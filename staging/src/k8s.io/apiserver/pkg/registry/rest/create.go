@@ -97,6 +97,9 @@ func BeforeCreate(strategy RESTCreateStrategy, ctx context.Context, obj runtime.
 		objectMeta.SetManagedFields(nil)
 	}
 
+	// options should never be stored
+	objectMeta.SetOptions(nil)
+
 	// ClusterName is ignored and should not be saved
 	if len(objectMeta.GetClusterName()) > 0 {
 		objectMeta.SetClusterName("")
