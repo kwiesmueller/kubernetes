@@ -279,6 +279,14 @@ type ObjectMeta struct {
 	//
 	// +optional
 	ManagedFields []ManagedFieldsEntry `json:"managedFields,omitempty" protobuf:"bytes,17,rep,name=managedFields"`
+
+	// Options is a map of string keys and values for providing information about the object to the apiserver.
+	// This field is write-only, non-persisted and optional.
+	// It may only contain keys that are known to the current apiserver version.
+	// Sending a request with an invalid key/value results in the request being rejected.
+	// The apiserver validates the field against the `AllowedOptions` list.
+	// Options available through this field, that are also available as query options, should cause an error if both are set and differ.
+	Options map[string]string `json:"options,omitempty" protobuf:"bytes,18,rep,name=options"`
 }
 
 const (
@@ -1148,6 +1156,21 @@ const (
 type FieldsV1 struct {
 	// Raw is the underlying serialization of this object.
 	Raw []byte `json:"-" protobuf:"bytes,1,opt,name=Raw"`
+}
+
+// FieldManagerOption defines the ObjectMeta.Options key for setting the fieldManager.
+// It is only used by the apiserver on create, apply and update operations, to set the ManagedFields accordingly.
+// The value associated with this key, must be less than or 128 characters long, and only contain printable characters, as defined by https://golang.org/pkg/unicode/#IsPrint.
+//
+// If the option is unset or empty, the apiserver will default to the request user-agent.
+// If the request contains the fieldManager option, it acts like this option.
+// If both this option and the request's fieldManager option are set but not equal, the apply or non-apply operation will fail.
+//
+const FieldManagerOption = "fieldManager"
+
+// AllowedOptions defines the list of keys allowed for `ObjectMeta.Options`.
+var AllowedOptions = []string{
+	FieldManagerOption,
 }
 
 // TODO: Table does not generate to protobuf because of the interface{} - fix protobuf

@@ -494,3 +494,16 @@ func (u *Unstructured) SetManagedFields(managedFields []metav1.ManagedFieldsEntr
 	}
 	u.setNestedSlice(items, "metadata", "managedFields")
 }
+
+func (u *Unstructured) GetOptions() map[string]string {
+	m, _, _ := NestedStringMap(u.Object, "metadata", "options")
+	return m
+}
+
+func (u *Unstructured) SetOptions(options map[string]string) {
+	if options == nil {
+		RemoveNestedField(u.Object, "metadata", "options")
+		return
+	}
+	u.setNestedMap(options, "metadata", "options")
+}

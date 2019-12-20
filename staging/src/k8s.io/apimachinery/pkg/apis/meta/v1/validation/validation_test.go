@@ -177,11 +177,6 @@ func TestInvalidPatchOptions(t *testing.T) {
 		opts      metav1.PatchOptions
 		patchType types.PatchType
 	}{
-		// missing manager
-		{
-			opts:      metav1.PatchOptions{},
-			patchType: types.ApplyPatchType,
-		},
 		// force on non-apply
 		{
 			opts: metav1.PatchOptions{

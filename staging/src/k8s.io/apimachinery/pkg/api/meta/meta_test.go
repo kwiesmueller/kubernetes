@@ -43,6 +43,8 @@ func TestAsPartialObjectMetadata(t *testing.T) {
 	for i := 0; i < 100; i++ {
 		m := &metav1beta1.PartialObjectMetadata{}
 		f.Fuzz(&m.ObjectMeta)
+		// Options are write-only so they can not be tested here
+		m.ObjectMeta.Options = nil
 		partial := AsPartialObjectMetadata(m)
 		if !reflect.DeepEqual(&partial.ObjectMeta, &m.ObjectMeta) {
 			t.Fatalf("incomplete partial object metadata: %s", diff.ObjectReflectDiff(&partial.ObjectMeta, &m.ObjectMeta))

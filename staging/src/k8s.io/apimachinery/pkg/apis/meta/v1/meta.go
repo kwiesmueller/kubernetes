@@ -63,6 +63,8 @@ type Object interface {
 	SetClusterName(clusterName string)
 	GetManagedFields() []ManagedFieldsEntry
 	SetManagedFields(managedFields []ManagedFieldsEntry)
+	GetOptions() map[string]string
+	SetOptions(options map[string]string)
 }
 
 // ListMetaAccessor retrieves the list interface from an object
@@ -176,3 +178,5 @@ func (meta *ObjectMeta) GetManagedFields() []ManagedFieldsEntry { return meta.Ma
 func (meta *ObjectMeta) SetManagedFields(managedFields []ManagedFieldsEntry) {
 	meta.ManagedFields = managedFields
 }
+func (meta *ObjectMeta) GetOptions() map[string]string        { return meta.Options }
+func (meta *ObjectMeta) SetOptions(options map[string]string) { meta.Options = options }
