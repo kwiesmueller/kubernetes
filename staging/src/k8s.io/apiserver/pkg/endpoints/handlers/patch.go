@@ -28,6 +28,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/meta"
 	metainternalversionscheme "k8s.io/apimachinery/pkg/apis/meta/internalversion/scheme"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/validation"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -48,6 +49,7 @@ import (
 	"k8s.io/apiserver/pkg/util/dryrun"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	utiltrace "k8s.io/utils/trace"
+	"sigs.k8s.io/yaml"
 )
 
 const (
@@ -320,8 +322,13 @@ func (p *jsonPatcher) applyPatchToCurrentObject(currentObject runtime.Object) (r
 		})
 	}
 
+	manager, err := validateFieldManager(objToUpdate, p.options.FieldManager)
+	if err != nil {
+		return nil, err
+	}
+
 	if p.fieldManager != nil {
-		if objToUpdate, err = p.fieldManager.Update(currentObject, objToUpdate, managerOrUserAgent(p.options.FieldManager, p.userAgent)); err != nil {
+		if objToUpdate, err = p.fieldManager.Update(currentObject, objToUpdate, managerOrUserAgent(manager, p.userAgent)); err != nil {
 			return nil, fmt.Errorf("failed to update object (json PATCH for %v) managed fields: %v", p.kind, err)
 		}
 	}
@@ -405,8 +412,13 @@ func (p *smpPatcher) applyPatchToCurrentObject(currentObject runtime.Object) (ru
 		return nil, err
 	}
 
+	manager, err := validateFieldManager(newObj, p.options.FieldManager)
+	if err != nil {
+		return nil, err
+	}
+
 	if p.fieldManager != nil {
-		if newObj, err = p.fieldManager.Update(currentObject, newObj, managerOrUserAgent(p.options.FieldManager, p.userAgent)); err != nil {
+		if newObj, err = p.fieldManager.Update(currentObject, newObj, managerOrUserAgent(manager, p.userAgent)); err != nil {
 			return nil, fmt.Errorf("failed to update object (smp PATCH for %v) managed fields: %v", p.kind, err)
 		}
 	}
@@ -433,7 +445,23 @@ func (p *applyPatcher) applyPatchToCurrentObject(obj runtime.Object) (runtime.Ob
 	if p.fieldManager == nil {
 		panic("FieldManager must be installed to run apply")
 	}
-	return p.fieldManager.Apply(obj, p.patch, p.options.FieldManager, force)
+
+	// TODO(kwiesmueller): this is based on the change in https://github.com/kubernetes/kubernetes/pull/86083/files#diff-15bdfc59ec78ff09b509d4a347560a1bR431-R446
+	// The respective PR should merge first or the changes to the apply signature should be taken over
+	patchObj := &unstructured.Unstructured{Object: map[string]interface{}{}}
+	if err := yaml.Unmarshal(p.patch, &patchObj.Object); err != nil {
+		return nil, errors.NewBadRequest(fmt.Sprintf("error decoding YAML: %v", err))
+	}
+
+	manager, err := validateFieldManager(patchObj, p.options.FieldManager)
+	if err != nil {
+		return nil, err
+	}
+	if len(manager) < 1 {
+		return nil, errors.NewBadRequest("missing fieldManager")
+	}
+
+	return p.fieldManager.Apply(obj, p.patch, manager, force)
 }
 
 func (p *applyPatcher) createNewObject() (runtime.Object, error) {

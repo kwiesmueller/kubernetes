@@ -126,7 +126,13 @@ func UpdateResource(r rest.Updater, scope *RequestScope, admit admission.Interfa
 		transformers := []rest.TransformFunc{}
 		if scope.FieldManager != nil {
 			transformers = append(transformers, func(_ context.Context, newObj, liveObj runtime.Object) (runtime.Object, error) {
-				obj, err := scope.FieldManager.Update(liveObj, newObj, managerOrUserAgent(options.FieldManager, req.UserAgent()))
+
+				manager, err := validateFieldManager(newObj, options.FieldManager)
+				if err != nil {
+					return nil, err
+				}
+
+				obj, err := scope.FieldManager.Update(liveObj, newObj, managerOrUserAgent(manager, req.UserAgent()))
 				if err != nil {
 					return nil, fmt.Errorf("failed to update object (Update for %v) managed fields: %v", scope.Kind, err)
 				}

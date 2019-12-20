@@ -1305,7 +1305,7 @@ func TestUpdateUsesFieldManagerOption(t *testing.T) {
 		Namespace("default").
 		Resource("configmaps").
 		Name("test-cm").
-		Param("fieldManager", "apply_test").
+		Param("fieldManager", "declarative_apply_test").
 		Body([]byte(`{
 			"apiVersion": "v1",
 			"kind": "ConfigMap",
@@ -1314,7 +1314,7 @@ func TestUpdateUsesFieldManagerOption(t *testing.T) {
 				"namespace": "default"
 			},
 			"data": {
-				"key": "value"
+				"key": "a"
 			}
 		}`)).
 		Do().
@@ -1327,7 +1327,6 @@ func TestUpdateUsesFieldManagerOption(t *testing.T) {
 		Namespace("default").
 		Resource("configmaps").
 		Name("test-cm").
-		Param("fieldManager", "declarative_apply_test").
 		Body([]byte(`{
 			"apiVersion": "v1",
 			"kind": "ConfigMap",
@@ -1339,7 +1338,7 @@ func TestUpdateUsesFieldManagerOption(t *testing.T) {
 				}
 			},
 			"data": {
-				"key": "value"
+				"key": "b"
 			}
 		}`)).
 		Do().
