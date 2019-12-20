@@ -19,6 +19,8 @@ metadata:
     operation: 鐊唊飙Ş-U圴÷a/ɔ}摁(湗Ć]
   name: "2"
   namespace: "4"
+  options:
+    "19": "20"
   ownerReferences:
   - apiVersion: "11"
     blockOwnerDeletion: true
@@ -26,38 +28,38 @@ metadata:
     kind: "12"
     name: "13"
     uid: Dz廔ȇ{sŊƏp
-  resourceVersion: "11042405498087606203"
+  resourceVersion: "11192860951737014106"
   selfLink: "5"
-  uid: "7"
+  uid: Uą飋īqJ枊a8衍
 spec:
-  clusterIP: "23"
+  clusterIP: "24"
   externalIPs:
-  - "24"
-  externalName: "27"
-  externalTrafficPolicy: ʤ脽ěĂ凗蓏Ŋ蛊ĉy緅縕>Ž
-  healthCheckNodePort: -1095807277
-  ipFamily: ³-Ǐ忄*齧獚敆ȎțêɘĲ斬
-  loadBalancerIP: "25"
+  - "25"
+  externalName: "28"
+  externalTrafficPolicy: SǡƏ
+  healthCheckNodePort: 1820560904
+  ipFamily: 牗洝尿彀亞螩B峅x4%a鯿rŎ
+  loadBalancerIP: "26"
   loadBalancerSourceRanges:
-  - "26"
+  - "27"
   ports:
-  - name: "19"
-    nodePort: -474380055
-    port: 202283346
-    protocol: '@Hr鯹)晿'
-    targetPort: "20"
+  - name: "21"
+    nodePort: 253776854
+    port: 1086410402
+    protocol: .蘯6ċV夸
+    targetPort: -812468109
   publishNotReadyAddresses: true
   selector:
-    "21": "22"
-  sessionAffinity: ɑ
+    "22": "23"
+  sessionAffinity: VŚ(ĿȊ甞谐颋
   sessionAffinityConfig:
     clientIP:
-      timeoutSeconds: -1973740160
+      timeoutSeconds: 1213874057
   topologyKeys:
-  - "28"
-  type: .蘯6ċV夸
+  - "29"
+  type: ǸƢ6/
 status:
   loadBalancer:
     ingress:
-    - hostname: "30"
-      ip: "29"
+    - hostname: "31"
+      ip: "30"

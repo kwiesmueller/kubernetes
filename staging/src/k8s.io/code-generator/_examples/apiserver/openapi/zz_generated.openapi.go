@@ -1326,6 +1326,21 @@ func schema_pkg_apis_meta_v1_ObjectMeta(ref common.ReferenceCallback) common.Ope
 							},
 						},
 					},
+					"options": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Options is a map of string keys and values for providing information about the object to the apiserver. This field is write-only, non-persisted and optional. It may only contain keys that are known to the current apiserver version. Sending a request with an invalid key/value results in the request being rejected. The apiserver validates the field against the `AllowedOptions` list. Options available through this field, that are also available as query options, should cause an error if both are set and differ.",
+							Type:        []string{"object"},
+							AdditionalProperties: &spec.SchemaOrBool{
+								Allows: true,
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},

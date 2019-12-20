@@ -19,6 +19,8 @@ metadata:
     operation: 鐊唊飙Ş-U圴÷a/ɔ}摁(湗Ć]
   name: "2"
   namespace: "4"
+  options:
+    "19": "20"
   ownerReferences:
   - apiVersion: "11"
     blockOwnerDeletion: true
@@ -26,29 +28,30 @@ metadata:
     kind: "12"
     name: "13"
     uid: Dz廔ȇ{sŊƏp
-  resourceVersion: "11042405498087606203"
+  resourceVersion: "11192860951737014106"
   selfLink: "5"
-  uid: "7"
+  uid: Uą飋īqJ枊a8衍
 spec:
   extra:
-    "30":
-    - "31"
+    "32":
+    - "33"
   groups:
-  - "29"
+  - "31"
   nonResourceAttributes:
-    path: "26"
-    verb: "27"
+    path: "28"
+    verb: "29"
   resourceAttributes:
-    group: "21"
-    name: "25"
-    namespace: "19"
-    resource: "23"
-    subresource: "24"
-    verb: "20"
-    version: "22"
-  uid: "32"
-  user: "28"
+    group: "23"
+    name: "27"
+    namespace: "21"
+    resource: "25"
+    subresource: "26"
+    verb: "22"
+    version: "24"
+  uid: "34"
+  user: "30"
 status:
-  allowed: false
-  evaluationError: "34"
-  reason: "33"
+  allowed: true
+  denied: true
+  evaluationError: "36"
+  reason: "35"

@@ -19,6 +19,8 @@ metadata:
     operation: 鐊唊飙Ş-U圴÷a/ɔ}摁(湗Ć]
   name: "2"
   namespace: "4"
+  options:
+    "19": "20"
   ownerReferences:
   - apiVersion: "11"
     blockOwnerDeletion: true
@@ -26,196 +28,194 @@ metadata:
     kind: "12"
     name: "13"
     uid: Dz廔ȇ{sŊƏp
-  resourceVersion: "11042405498087606203"
+  resourceVersion: "11192860951737014106"
   selfLink: "5"
-  uid: "7"
+  uid: Uą飋īqJ枊a8衍
 spec:
   accessModes:
-  - ƺ魋Ď儇击3ƆìQ
+  - d賑'üA謥ǣ偐圠=
   awsElasticBlockStore:
-    fsType: "22"
-    partition: -1821408417
-    volumeID: "21"
+    fsType: "24"
+    partition: -2052872833
+    volumeID: "23"
   azureDisk:
-    cachingMode: ȎțêɘĲ斬³;Ơ歿
-    diskName: "78"
-    diskURI: "79"
-    fsType: "80"
-    kind: 夌碕ʂɭîcP$Iņɖ橙9ȫŚʒ
+    cachingMode: x
+    diskName: "80"
+    diskURI: "81"
+    fsType: "82"
+    kind: a鯿rŎǀ朲^苣
     readOnly: false
   azureFile:
-    secretName: "66"
-    secretNamespace: "68"
-    shareName: "67"
+    secretName: "68"
+    secretNamespace: "70"
+    shareName: "69"
   capacity:
-    '@Hr鯹)晿': "617"
+    .蘯6ċV夸: "777"
   cephfs:
     monitors:
-    - "49"
-    path: "50"
-    secretFile: "52"
+    - "51"
+    path: "52"
+    readOnly: true
+    secretFile: "54"
     secretRef:
-      name: "53"
-      namespace: "54"
-    user: "51"
+      name: "55"
+      namespace: "56"
+    user: "53"
   cinder:
-    fsType: "46"
+    fsType: "48"
     readOnly: true
     secretRef:
-      name: "47"
-      namespace: "48"
-    volumeID: "45"
+      name: "49"
+      namespace: "50"
+    volumeID: "47"
   claimRef:
-    apiVersion: "121"
-    fieldPath: "123"
-    kind: "118"
-    name: "120"
-    namespace: "119"
-    resourceVersion: "122"
-    uid: 艋涽託仭w-檮Ǣ冖ž琔n宂¬轚
+    apiVersion: "123"
+    fieldPath: "125"
+    kind: "120"
+    name: "122"
+    namespace: "121"
+    resourceVersion: "124"
   csi:
     controllerExpandSecretRef:
-      name: "116"
-      namespace: "117"
+      name: "118"
+      namespace: "119"
     controllerPublishSecretRef:
-      name: "110"
-      namespace: "111"
-    driver: "105"
-    fsType: "107"
-    nodePublishSecretRef:
-      name: "114"
-      namespace: "115"
-    nodeStageSecretRef:
       name: "112"
       namespace: "113"
-    volumeAttributes:
-      "108": "109"
-    volumeHandle: "106"
-  fc:
-    fsType: "56"
-    lun: 1820560904
+    driver: "107"
+    fsType: "109"
+    nodePublishSecretRef:
+      name: "116"
+      namespace: "117"
+    nodeStageSecretRef:
+      name: "114"
+      namespace: "115"
     readOnly: true
+    volumeAttributes:
+      "110": "111"
+    volumeHandle: "108"
+  fc:
+    fsType: "58"
+    lun: -616291512
     targetWWNs:
-    - "55"
-    wwids:
     - "57"
+    wwids:
+    - "59"
   flexVolume:
-    driver: "60"
-    fsType: "61"
+    driver: "62"
+    fsType: "63"
     options:
-      "64": "65"
+      "66": "67"
     secretRef:
-      name: "62"
-      namespace: "63"
+      name: "64"
+      namespace: "65"
   flocker:
-    datasetName: "58"
-    datasetUUID: "59"
+    datasetName: "60"
+    datasetUUID: "61"
   gcePersistentDisk:
-    fsType: "20"
-    partition: 757808475
-    pdName: "19"
+    fsType: "22"
+    partition: 88670081
+    pdName: "21"
     readOnly: true
   glusterfs:
-    endpoints: "24"
-    endpointsNamespace: "26"
-    path: "25"
+    endpoints: "26"
+    endpointsNamespace: "28"
+    path: "27"
     readOnly: true
   hostPath:
-    path: "23"
-    type: rt昍řČ扷5ƗǸƢ6/
+    path: "25"
+    type: Ă凗蓏Ŋ蛊ĉy
   iscsi:
-    chapAuthDiscovery: true
-    fsType: "40"
-    initiatorName: "44"
-    iqn: "38"
-    iscsiInterface: "39"
-    lun: 494729996
+    fsType: "42"
+    initiatorName: "46"
+    iqn: "40"
+    iscsiInterface: "41"
+    lun: 2048967527
     portals:
-    - "41"
+    - "43"
     readOnly: true
     secretRef:
-      name: "42"
-      namespace: "43"
-    targetPortal: "37"
+      name: "44"
+      namespace: "45"
+    targetPortal: "39"
   local:
-    fsType: "95"
-    path: "94"
+    fsType: "97"
+    path: "96"
   mountOptions:
-  - "125"
+  - "127"
   nfs:
-    path: "28"
-    server: "27"
+    path: "30"
+    server: "29"
   nodeAffinity:
     required:
       nodeSelectorTerms:
       - matchExpressions:
-        - key: "126"
-          operator: f倐ȓ圬剴扲ȿQZ{ʁgɸ=ǤÆ碛,1
-          values:
-          - "127"
-        matchFields:
         - key: "128"
-          operator: l恕ɍȇ廄裭4懙鏮嵒
+          operator: 檮Ǣ冖ž琔n宂¬轚9Ȏ瀮昃2
           values:
           - "129"
-  persistentVolumeReclaimPolicy: £趕ã/鈱$-议}ȧ外ĺ
+        matchFields:
+        - key: "130"
+          operator: -议}ȧ外ĺ稥氹Ç|¶
+          values:
+          - "131"
+  persistentVolumeReclaimPolicy: 錕?øēƺ魋Ď儇击3ƆìQ喞艋
   photonPersistentDisk:
-    fsType: "82"
-    pdID: "81"
-  portworxVolume:
     fsType: "84"
-    volumeID: "83"
+    pdID: "83"
+  portworxVolume:
+    fsType: "86"
+    readOnly: true
+    volumeID: "85"
   quobyte:
-    group: "76"
-    registry: "73"
-    tenant: "77"
-    user: "75"
-    volume: "74"
+    group: "78"
+    readOnly: true
+    registry: "75"
+    tenant: "79"
+    user: "77"
+    volume: "76"
   rbd:
-    fsType: "31"
-    image: "30"
-    keyring: "34"
+    fsType: "33"
+    image: "32"
+    keyring: "36"
     monitors:
-    - "29"
-    pool: "32"
+    - "31"
+    pool: "34"
     secretRef:
-      name: "35"
-      namespace: "36"
-    user: "33"
+      name: "37"
+      namespace: "38"
+    user: "35"
   scaleIO:
-    fsType: "93"
-    gateway: "85"
-    protectionDomain: "89"
-    readOnly: true
+    fsType: "95"
+    gateway: "87"
+    protectionDomain: "91"
     secretRef:
-      name: "87"
-      namespace: "88"
-    sslEnabled: true
-    storageMode: "91"
-    storagePool: "90"
-    system: "86"
-    volumeName: "92"
-  storageClassName: "124"
+      name: "89"
+      namespace: "90"
+    storageMode: "93"
+    storagePool: "92"
+    system: "88"
+    volumeName: "94"
+  storageClassName: "126"
   storageos:
-    fsType: "98"
-    readOnly: true
+    fsType: "100"
     secretRef:
-      apiVersion: "102"
-      fieldPath: "104"
-      kind: "99"
-      name: "101"
-      namespace: "100"
-      resourceVersion: "103"
-      uid: ȸd賑'üA謥ǣ偐圠=l
-    volumeName: "96"
-    volumeNamespace: "97"
-  volumeMode: 譋娲瘹ɭȊɚɎ(
+      apiVersion: "104"
+      fieldPath: "106"
+      kind: "101"
+      name: "103"
+      namespace: "102"
+      resourceVersion: "105"
+      uid: ȮO励鹗塢ē ƕP
+    volumeName: "98"
+    volumeNamespace: "99"
+  volumeMode: ½
   vsphereVolume:
-    fsType: "70"
-    storagePolicyID: "72"
-    storagePolicyName: "71"
-    volumePath: "69"
+    fsType: "72"
+    storagePolicyID: "74"
+    storagePolicyName: "73"
+    volumePath: "71"
 status:
-  message: "130"
-  phase: S捕ɷD¡轫n(鲼ƳÐƣKʘ
-  reason: "131"
+  message: "132"
+  phase: ¡ Ɠ(嘒ėf倐ȓ圬剴扲ȿQZ
+  reason: "133"

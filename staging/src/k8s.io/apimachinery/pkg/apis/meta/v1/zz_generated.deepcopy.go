@@ -689,6 +689,13 @@ func (in *ObjectMeta) DeepCopyInto(out *ObjectMeta) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.Options != nil {
+		in, out := &in.Options, &out.Options
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
 	return
 }
 

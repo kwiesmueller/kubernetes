@@ -19,6 +19,8 @@ metadata:
     operation: 鐊唊飙Ş-U圴÷a/ɔ}摁(湗Ć]
   name: "2"
   namespace: "4"
+  options:
+    "19": "20"
   ownerReferences:
   - apiVersion: "11"
     blockOwnerDeletion: true
@@ -26,19 +28,19 @@ metadata:
     kind: "12"
     name: "13"
     uid: Dz廔ȇ{sŊƏp
-  resourceVersion: "11042405498087606203"
+  resourceVersion: "11192860951737014106"
   selfLink: "5"
-  uid: "7"
+  uid: Uą飋īqJ枊a8衍
 spec:
-  maxReplicas: -1971381490
-  minReplicas: 896585016
+  maxReplicas: 783184601
+  minReplicas: -1821408417
   scaleTargetRef:
-    apiVersion: "21"
-    kind: "19"
-    name: "20"
-  targetCPUUtilizationPercentage: -1300313567
+    apiVersion: "23"
+    kind: "21"
+    name: "22"
+  targetCPUUtilizationPercentage: -387137265
 status:
-  currentCPUUtilizationPercentage: 757808475
-  currentReplicas: -738053939
-  desiredReplicas: -1258077201
-  observedGeneration: -5238012362384355226
+  currentCPUUtilizationPercentage: 88670081
+  currentReplicas: -59112078
+  desiredReplicas: 1266076158
+  observedGeneration: -6409065148647082444

@@ -19,6 +19,8 @@ metadata:
     operation: 鐊唊飙Ş-U圴÷a/ɔ}摁(湗Ć]
   name: "2"
   namespace: "4"
+  options:
+    "19": "20"
   ownerReferences:
   - apiVersion: "11"
     blockOwnerDeletion: true
@@ -26,18 +28,18 @@ metadata:
     kind: "12"
     name: "13"
     uid: Dz廔ȇ{sŊƏp
-  resourceVersion: "11042405498087606203"
+  resourceVersion: "11192860951737014106"
   selfLink: "5"
-  uid: "7"
+  uid: Uą飋īqJ枊a8衍
 spec:
   audiences:
-  - "19"
+  - "21"
   boundObjectRef:
-    apiVersion: "21"
-    kind: "20"
-    name: "22"
-    uid: r鯹)晿<o,c鮽ort昍řČ扷5ƗǸ
-  expirationSeconds: 3850803321873644574
+    apiVersion: "23"
+    kind: "22"
+    name: "24"
+    uid: 6ċ
+  expirationSeconds: -7822889581826753257
 status:
-  expirationTimestamp: "1999-07-03T22:31:10Z"
-  token: "23"
+  expirationTimestamp: "2530-04-08T07:06:28Z"
+  token: "25"

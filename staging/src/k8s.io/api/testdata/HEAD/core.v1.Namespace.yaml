@@ -19,6 +19,8 @@ metadata:
     operation: 鐊唊飙Ş-U圴÷a/ɔ}摁(湗Ć]
   name: "2"
   namespace: "4"
+  options:
+    "19": "20"
   ownerReferences:
   - apiVersion: "11"
     blockOwnerDeletion: true
@@ -26,17 +28,17 @@ metadata:
     kind: "12"
     name: "13"
     uid: Dz廔ȇ{sŊƏp
-  resourceVersion: "11042405498087606203"
+  resourceVersion: "11192860951737014106"
   selfLink: "5"
-  uid: "7"
+  uid: Uą飋īqJ枊a8衍
 spec:
   finalizers:
-  - '@Hr鯹)晿'
+  - .蘯6ċV夸
 status:
   conditions:
-  - lastTransitionTime: "2956-02-24T15:15:18Z"
-    message: "20"
-    reason: "19"
-    status: Ȋ甞谐颋ǅSǡƏS$+½H牗洝尿
-    type: 夸eɑeʤ脽ěĂ凗蓏Ŋ蛊ĉy
-  phase: '`Ĩɘ.蘯6ċ'
+  - lastTransitionTime: "2576-02-26T21:44:34Z"
+    message: "22"
+    reason: "21"
+    status: ȎțêɘĲ斬³;Ơ歿
+    type: ƏS$+½H牗洝尿
+  phase: Č扷5ƗǸƢ6/ʕVŚ(ĿȊ甞谐颋ǅS

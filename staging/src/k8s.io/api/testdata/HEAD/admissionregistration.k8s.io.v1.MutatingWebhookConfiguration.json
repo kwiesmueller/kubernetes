@@ -6,8 +6,8 @@
     "generateName": "3",
     "namespace": "4",
     "selfLink": "5",
-    "uid": "7",
-    "resourceVersion": "11042405498087606203",
+    "uid": "Uą飋īqJ枊a8衍",
+    "resourceVersion": "11192860951737014106",
     "generation": 8071137005907523419,
     "creationTimestamp": null,
     "deletionGracePeriodSeconds": -4955867275792137171,
@@ -38,71 +38,77 @@
         "apiVersion": "17",
         "fieldsType": "18"
       }
-    ]
+    ],
+    "options": {
+      "19": "20"
+    }
   },
   "webhooks": [
     {
-      "name": "19",
+      "name": "21",
       "clientConfig": {
-        "url": "20",
+        "url": "22",
         "service": {
-          "namespace": "21",
-          "name": "22",
-          "path": "23",
-          "port": -1971381490
+          "namespace": "23",
+          "name": "24",
+          "path": "25",
+          "port": 783184601
         },
-        "caBundle": "IQ=="
+        "caBundle": "Dw=="
       },
       "rules": [
         {
           "operations": [
-            "8衍`Ĩɘ.蘯"
+            "昍řČ扷5ƗǸƢ6/"
           ],
           "apiGroups": [
-            "24"
-          ],
-          "apiVersions": [
-            "25"
-          ],
-          "resources": [
             "26"
           ],
-          "scope": "昍řČ扷5ƗǸƢ6/"
+          "apiVersions": [
+            "27"
+          ],
+          "resources": [
+            "28"
+          ],
+          "scope": "ĉy緅縕\u003eŽ燹憍峕?狱³-Ǐ"
         }
       ],
-      "failurePolicy": "VŚ(ĿȊ甞谐颋",
-      "matchPolicy": "SǡƏ",
+      "failurePolicy": "*齧獚敆Ȏțêɘ",
+      "matchPolicy": "斬³;Ơ歿:狞夌碕ʂɭîcP$Iņɖ",
       "namespaceSelector": {
         "matchLabels": {
-          "2.1.L.l-Y._.-44..d.__Gg8-2_kS91.e5K-_e63_-_3-n-_-__3u-.J": "G_.7U-Uo_4_-D7r__.am64"
+          "WR58_HLU..8._bQw.-dG6c-.6--_x.--0wmZk1_8._3U": "UBq.m_-.q8_v2LiTF_a981d3-7-fP81.-9"
         },
         "matchExpressions": [
           {
-            "key": "2.-__E_Sv__26KX_R_.-.Nth._--S_4DA_-5_-4lQ42M--n1-5",
-            "operator": "In",
+            "key": "GE.9__.3_u1.m_.5AW-_S-.3g.7_2fNc5-0",
+            "operator": "NotIn",
             "values": [
-              "Ou1.m_.5AW-_S-.3g.7_2fNc5-_.-RX8"
+              "YM9T9sH.Wu5--.K_.0--_0P7_.C.Ze--D07.a_.G"
             ]
           }
         ]
       },
       "objectSelector": {
         "matchLabels": {
-          "7p_w.e6._.pj5t_k-_v.-6b6.N_-u.---.8-L": "k-U.v.4"
+          "525-67ygv-nz--7l--2wxz3t20wt0wtd1/a6.9bHjdH.4": "tJ-M.9_T.q-o7.y-SQ.9A-F-.4--_vLW.jj-.5B..0"
         },
         "matchExpressions": [
           {
-            "key": "35--5ht-a-29--0qso79yg--79-e-a74bc-v--0jjy45-17-05-3z-4838/3-H2._67yg-Ln-__.-__2--z.t2w",
-            "operator": "Exists"
+            "key": "2v4r--5-xc/4.xXe..03f_--00",
+            "operator": "In",
+            "values": [
+              "Gy-_7_-I_c0U-.Z.-_9_--t"
+            ]
           }
         ]
       },
-      "sideEffects": "Ɵ)Ù",
-      "timeoutSeconds": 1132918207,
+      "sideEffects": "ĵ",
+      "timeoutSeconds": -275618361,
       "admissionReviewVersions": [
-        "39"
+        "41"
       ],
-      "reinvocationPolicy": "錯ƶ"
+      "reinvocationPolicy": "%:;栍dʪīT捘ɍi"
     }
   ]
 }

@@ -19,6 +19,8 @@ metadata:
     operation: 鐊唊飙Ş-U圴÷a/ɔ}摁(湗Ć]
   name: "2"
   namespace: "4"
+  options:
+    "19": "20"
   ownerReferences:
   - apiVersion: "11"
     blockOwnerDeletion: true
@@ -26,64 +28,61 @@ metadata:
     kind: "12"
     name: "13"
     uid: Dz廔ȇ{sŊƏp
-  resourceVersion: "11042405498087606203"
+  resourceVersion: "11192860951737014106"
   selfLink: "5"
-  uid: "7"
+  uid: Uą飋īqJ枊a8衍
 spec:
   egress:
   - ports:
     - port: 3
-      protocol: ɗ
+      protocol: 閼咎櫸eʔŊ
     to:
     - ipBlock:
-        cidr: "51"
+        cidr: "53"
         except:
-        - "52"
+        - "54"
       namespaceSelector:
         matchExpressions:
-        - key: 4a--0o8m3-d0w7p8vl-1z---883d-v3j4-7y-5.9-q390/niTl.1-.VT--5mj_9.M.134-5-.q6H5
+        - key: 7___-Y_um-8
           operator: NotIn
           values:
-          - 7-.p_3_J_SA995IKCR.sm
+          - q.0-_1-F.h-__k_K5._3
         matchLabels:
-          P____K_1: Xfr.4_.-_-_-...1py_8-3..s._.x.2K_2qu_0S-CqW.D_8--21kv
+          q05c1lxeqyn-5--9d5a3-7bf46g-40883176jt-e8b--i.1v53nyx5u-o-k-md--381l/OaLQI: n-Dd-.9.-_Z.0_1._hg._o_p665O_G
       podSelector:
         matchExpressions:
-        - key: b_2_-8-----yY
-          operator: NotIn
-          values:
-          - M24
+        - key: 99--b-a-ix/Lr7-6.-m..-_-.f9--Q3Y
+          operator: Exists
         matchLabels:
-          ? hg1-o-p665--4-j8---t6-r7---d--uml-8rdh6844-i-18-850-4s2o8.x4--s--xu-d42--clo90---461v-07r--0---8-30iu/s6.0_OHz_.B-.-_w_--.8_r_N-.3n-x.-_-_-Nm-_X3.1d_YH3x---.._1_.NX
-          : f-AH-Q.GM72_-c-.-.6--3-___t-8
+          0v59s-3------6tv27r-m8w-6-9-35d383-iq-ap/Q_8.-1_57__JR.N-1zL-4--6o--Bo-F__..XR.7_1p: 6bigm_-._.q768-m_0_F03_-_.L.35__5b.5-CX_VBC.Jn4f__.9
   ingress:
   - from:
     - ipBlock:
-        cidr: "37"
+        cidr: "39"
         except:
-        - "38"
+        - "40"
       namespaceSelector:
         matchExpressions:
-        - key: 2_28.-.7_8B.HF-U-_ik_--DSXr.n-A9..9__Y-H-Mqpt._.-_..051
+        - key: 6S17_.8CnK_O.d-._NwcGnP-w-Sf5_Or.i1_7z.WH-.L
           operator: DoesNotExist
         matchLabels:
-          g--5.-Z3P__D__6t-2.-_-8wE._._3.-.83_iq_-y.-25C.A-7: 9dfn3Y8d_0_.---M_4FpF_W-1._-vL_i.-_-a--G-I.-_Y33--.8U.-.5-R
+          6--79-e-a74bc-v6.j3sog-405--l071yyms7-tk1po6c-m61733-x-2v4r--5-xg3/N2--z.t20w-.-td---ndm_.8A6.6LM: jOK-_8gB
       podSelector:
         matchExpressions:
-        - key: 3--2---u--80k1-57----1-x1z-4/r.i1_7z.WH-.._Td2-N_Y.t--_0..--_6V
-          operator: Exists
+        - key: u5--.K_.0--_0P7_.C.Ze--D07.a_.y_y_o0_5qN2z
+          operator: In
+          values:
+          - i.8--LI--U.v.L.U_f
         matchLabels:
-          yg--79-e-a74bc-v--0jjy45-17-053.zyyms7-tk1po6c-m61733-x-2v4r--5-xgc3-yz-7-x--c0-w5-6r/78A6.6O: 17_.8CnT
+          Q4DA_-5_-4lQ42M--n1p: 03___47._49pIB_o61ISU4--A_.XK_._9
     ports:
     - port: 2
-      protocol: Ǐ2啗塧ȱ蓿彭聡A3fƻfʣ
+      protocol: QZ{ʁgɸ=ǤÆ
   podSelector:
     matchExpressions:
-    - key: p503---477-49p---o61---4fy--9---7--9-9s-0-u5lj2--10pq-0-7-9-2-0/fP81.-.9Vdx.TB_M-H_5_.t..bG0
-      operator: In
-      values:
-      - D07.a_.y_y_o0_5qN2_---_M.N_._a6.9bHjdH.-.5_.I8__n
+    - key: 0wmZk1_8._3s_-_Bq.m_-.q8_v2LT
+      operator: DoesNotExist
     matchLabels:
-      8---jop9641lg.p-g8c2-k-912e5-c-e63-n-3n/E9.8ThjT9s-j41-0-6p-JFHn7y-74.-0MUORQQ.N2.3: 68._bQw.-dG6c-.6--_x.--0wmZk1_8._3s_-_Bq.m_4
+      6-___._-.-W._AAn---v_-5-_8LXP-o-9..1l-_5---5w9vL_-.M.y._W: 58_HLU..8._bQw.-d6
   policyTypes:
-  - ĨǔvÄ
+  - '|表徶đ'

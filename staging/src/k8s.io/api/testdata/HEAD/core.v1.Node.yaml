@@ -19,6 +19,8 @@ metadata:
     operation: 鐊唊飙Ş-U圴÷a/ɔ}摁(湗Ć]
   name: "2"
   namespace: "4"
+  options:
+    "19": "20"
   ownerReferences:
   - apiVersion: "11"
     blockOwnerDeletion: true
@@ -26,85 +28,85 @@ metadata:
     kind: "12"
     name: "13"
     uid: Dz廔ȇ{sŊƏp
-  resourceVersion: "11042405498087606203"
+  resourceVersion: "11192860951737014106"
   selfLink: "5"
-  uid: "7"
+  uid: Uą飋īqJ枊a8衍
 spec:
   configSource:
     configMap:
-      kubeletConfigKey: "27"
-      name: "25"
-      namespace: "24"
-      resourceVersion: "26"
-      uid: Ă凗蓏Ŋ蛊ĉy
-  externalID: "28"
-  podCIDR: "19"
+      kubeletConfigKey: "29"
+      name: "27"
+      namespace: "26"
+      resourceVersion: "28"
+      uid: ƗǸƢ6/ʕV
+  externalID: "30"
+  podCIDR: "21"
   podCIDRs:
-  - "20"
-  providerID: "21"
+  - "22"
+  providerID: "23"
   taints:
-  - effect: Hr鯹)晿<o,c鮽ort昍řČ扷5Ɨ
-    key: "22"
-    value: "23"
+  - effect: 蘯6ċV夸eɑ
+    key: "24"
+    value: "25"
 status:
   addresses:
-  - address: "31"
-    type: OŖ樅尷
+  - address: "33"
+    type: 喂ƈ斎AO6
   allocatable:
-    峅x: "826"
+    Ǐ忄*齧獚敆ȎțêɘĲ: "912"
   capacity:
-    縕>Ž燹憍峕?狱³-Ǐ忄*齧獚敆Ȏț: "2"
+    (ĿȊ甞谐颋ǅSǡƏS: "801"
   conditions:
-  - lastHeartbeatTime: "2339-08-25T14:46:58Z"
-    lastTransitionTime: "2681-06-13T05:43:15Z"
-    message: "30"
-    reason: "29"
-    status: P$Iņɖ橙9ȫŚʒ
-    type: ""
+  - lastHeartbeatTime: "2681-06-13T05:43:15Z"
+    lastTransitionTime: "2917-01-04T07:14:08Z"
+    message: "32"
+    reason: "31"
+    status: '励鹗塢ē '
+    type: Iņɖ
   config:
     active:
       configMap:
-        kubeletConfigKey: "51"
-        name: "49"
-        namespace: "48"
-        resourceVersion: "50"
-        uid: 譋娲瘹ɭȊɚɎ(
+        kubeletConfigKey: "53"
+        name: "51"
+        namespace: "50"
+        resourceVersion: "52"
+        uid: £.vǴʌ鴜Ł%Ũ
     assigned:
       configMap:
-        kubeletConfigKey: "47"
-        name: "45"
-        namespace: "44"
-        resourceVersion: "46"
-        uid: £趕ã/鈱$-议}ȧ外ĺ
-    error: "56"
+        kubeletConfigKey: "49"
+        name: "47"
+        namespace: "46"
+        resourceVersion: "48"
+        uid: 魋Ď儇击3ƆìQ喞艋涽
+    error: "58"
     lastKnownGood:
       configMap:
-        kubeletConfigKey: "55"
-        name: "53"
-        namespace: "52"
-        resourceVersion: "54"
-        uid: ėf倐ȓ圬剴扲ȿQZ{ʁgɸ
+        kubeletConfigKey: "57"
+        name: "55"
+        namespace: "54"
+        resourceVersion: "56"
+        uid: 轚9Ȏ瀮
   daemonEndpoints:
     kubeletEndpoint:
-      Port: -1579157235
+      Port: 819364842
   images:
   - names:
-    - "42"
-    sizeBytes: 9177598355370950419
+    - "44"
+    sizeBytes: -2492120148461555858
   nodeInfo:
-    architecture: "41"
-    bootID: "34"
-    containerRuntimeVersion: "37"
-    kernelVersion: "35"
-    kubeProxyVersion: "39"
-    kubeletVersion: "38"
-    machineID: "32"
-    operatingSystem: "40"
-    osImage: "36"
-    systemUUID: "33"
-  phase: '%a鯿rŎǀ朲^苣f'
+    architecture: "43"
+    bootID: "36"
+    containerRuntimeVersion: "39"
+    kernelVersion: "37"
+    kubeProxyVersion: "41"
+    kubeletVersion: "40"
+    machineID: "34"
+    operatingSystem: "42"
+    osImage: "38"
+    systemUUID: "35"
+  phase: ³;Ơ歿:狞夌碕ʂɭîcP
   volumesAttached:
-  - devicePath: "43"
-    name: ȭ%ƎÜ掸8½£.vǴʌ鴜Ł%ŨȈ
+  - devicePath: "45"
+    name: (-譵ņ錕?ø
   volumesInUse:
-  - üA謥ǣ偐圠=l畣潁谯耨V6&]鴍Ɋ
+  - 壝

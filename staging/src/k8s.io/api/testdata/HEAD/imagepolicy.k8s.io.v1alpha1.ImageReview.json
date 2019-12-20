@@ -6,8 +6,8 @@
     "generateName": "3",
     "namespace": "4",
     "selfLink": "5",
-    "uid": "7",
-    "resourceVersion": "11042405498087606203",
+    "uid": "Uą飋īqJ枊a8衍",
+    "resourceVersion": "11192860951737014106",
     "generation": 8071137005907523419,
     "creationTimestamp": null,
     "deletionGracePeriodSeconds": -4955867275792137171,
@@ -38,24 +38,27 @@
         "apiVersion": "17",
         "fieldsType": "18"
       }
-    ]
+    ],
+    "options": {
+      "19": "20"
+    }
   },
   "spec": {
     "containers": [
       {
-        "image": "19"
+        "image": "21"
       }
     ],
     "annotations": {
-      "20": "21"
+      "22": "23"
     },
-    "namespace": "22"
+    "namespace": "24"
   },
   "status": {
     "allowed": true,
-    "reason": "23",
+    "reason": "25",
     "auditAnnotations": {
-      "24": "25"
+      "26": "27"
     }
   }
 }

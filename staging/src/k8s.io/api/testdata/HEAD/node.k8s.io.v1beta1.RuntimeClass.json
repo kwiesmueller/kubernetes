@@ -6,8 +6,8 @@
     "generateName": "3",
     "namespace": "4",
     "selfLink": "5",
-    "uid": "7",
-    "resourceVersion": "11042405498087606203",
+    "uid": "Uą飋īqJ枊a8衍",
+    "resourceVersion": "11192860951737014106",
     "generation": 8071137005907523419,
     "creationTimestamp": null,
     "deletionGracePeriodSeconds": -4955867275792137171,
@@ -38,24 +38,28 @@
         "apiVersion": "17",
         "fieldsType": "18"
       }
-    ]
+    ],
+    "options": {
+      "19": "20"
+    }
   },
-  "handler": "19",
+  "handler": "21",
   "overhead": {
     "podFixed": {
-      "qJ枊a8衍`Ĩ": "652"
+      "鮽ort昍řČ扷5ƗǸƢ6/ʕVŚ(Ŀ": "11"
     }
   },
   "scheduling": {
     "nodeSelector": {
-      "20": "21"
+      "22": "23"
     },
     "tolerations": [
       {
-        "key": "22",
-        "value": "23",
-        "effect": "6ċ",
-        "tolerationSeconds": -5658031457286093454
+        "key": "24",
+        "operator": "Ž燹憍峕?狱³-Ǐ忄*齧獚敆Ȏț",
+        "value": "25",
+        "effect": "B峅x4%a",
+        "tolerationSeconds": -5418137398804098581
       }
     ]
   }
