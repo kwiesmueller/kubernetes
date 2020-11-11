@@ -17,8 +17,10 @@ limitations under the License.
 package fieldmanager
 
 import (
+	"context"
 	"fmt"
 
+	"github.com/davecgh/go-spew/spew"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -26,6 +28,10 @@ import (
 	"k8s.io/apiserver/pkg/endpoints/handlers/fieldmanager/internal"
 	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
 	"sigs.k8s.io/structured-merge-diff/v4/merge"
+	"sigs.k8s.io/structured-merge-diff/v4/typed"
+
+	// TODO(kwiesmueller): this is here just for evaluating this approach and should *NOT* stay (obviously)
+	registrypod "k8s.io/kubernetes/pkg/registry/core/pod"
 )
 
 type structuredMergeManager struct {
@@ -90,11 +96,29 @@ func (f *structuredMergeManager) Update(liveObj, newObj runtime.Object, managed 
 	}
 	apiVersion := fieldpath.APIVersion(f.groupVersion.String())
 
+	liveManagedFields := managed.Fields()
 	// TODO(apelisse) use the first return value when unions are implemented
 	_, managedFields, err := f.updater.Update(liveObjTyped, newObjTyped, apiVersion, managed.Fields(), manager)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to update ManagedFields: %v", err)
 	}
+
+	if newObj.GetObjectKind().GroupVersionKind().Kind == "Pod" {
+		preparedPatchTypedValue, err := f.preparedPatchTypedValue(context.TODO(), liveObj, newObj)
+		if err != nil {
+			return nil, nil, fmt.Errorf("failed to get preparedPatchTypedValue: %v", err)
+		}
+
+		fmt.Printf("----- liveManagedFields: %s\n", liveManagedFields)
+		fmt.Printf("----- newManagedFields: %s\n", managedFields)
+		managedFields, err = merge.WipeManagedFields(liveManagedFields, managedFields, manager, liveObjTyped, preparedPatchTypedValue)
+		if err != nil {
+			return nil, nil, fmt.Errorf("failed to wipe managedFields: %w", err)
+		}
+		fmt.Printf("----- wipedManagedFields: %s\n", managedFields)
+		fmt.Printf("------ wiping managedFields based on %#v, result: %v\n", spew.Sdump(preparedPatchTypedValue), managedFields)
+	}
+
 	managed = internal.NewManaged(managedFields, managed.Times())
 
 	return newObj, managed, nil
@@ -133,11 +157,29 @@ func (f *structuredMergeManager) Apply(liveObj, patchObj runtime.Object, managed
 		return nil, nil, fmt.Errorf("failed to create typed live object: %v", err)
 	}
 
+	liveManagedFields := managed.Fields()
 	apiVersion := fieldpath.APIVersion(f.groupVersion.String())
 	newObjTyped, managedFields, err := f.updater.Apply(liveObjTyped, patchObjTyped, apiVersion, managed.Fields(), manager, force)
 	if err != nil {
 		return nil, nil, err
 	}
+
+	if patchObj.GetObjectKind().GroupVersionKind().Kind == "Pod" {
+		preparedPatchTypedValue, err := f.preparedPatchTypedValue(context.TODO(), liveObj, patchObj)
+		if err != nil {
+			return nil, nil, fmt.Errorf("failed to get preparedPatchTypedValue: %v", err)
+		}
+
+		fmt.Printf("----- liveManagedFields: %s\n", liveManagedFields)
+		fmt.Printf("----- newManagedFields: %s\n", managedFields)
+		managedFields, err = merge.WipeManagedFields(liveManagedFields, managedFields, manager, liveObjTyped, preparedPatchTypedValue)
+		if err != nil {
+			return nil, nil, fmt.Errorf("failed to wipe managedFields: %w", err)
+		}
+		fmt.Printf("----- wipedManagedFields: %s\n", managedFields)
+		fmt.Printf("------ wiping managedFields based on %v, result: %v\n", spew.Sdump(preparedPatchTypedValue), managedFields)
+	}
+
 	managed = internal.NewManaged(managedFields, managed.Times())
 
 	if newObjTyped == nil {
@@ -168,4 +210,29 @@ func (f *structuredMergeManager) toVersioned(obj runtime.Object) (runtime.Object
 
 func (f *structuredMergeManager) toUnversioned(obj runtime.Object) (runtime.Object, error) {
 	return f.objectConverter.ConvertToVersion(obj, f.hubVersion)
+}
+
+func (f *structuredMergeManager) preparedPatchTypedValue(ctx context.Context, liveObj, patchObj runtime.Object) (*typed.TypedValue, error) {
+	liveObjUnversioned, err := f.toUnversioned(liveObj)
+	if err != nil {
+		return nil, fmt.Errorf("failed to convert live object to unversioned: %w", err)
+	}
+	patchObjUnversioned, err := f.toUnversioned(patchObj)
+	if err != nil {
+		return nil, fmt.Errorf("failed to convert patch object to unversioned: %w", err)
+	}
+
+	// TODO(kwiesmueller): wire the right strategy in
+	registrypod.Strategy.PrepareForUpdate(ctx, patchObjUnversioned, liveObjUnversioned)
+
+	preparedPatchObjVersioned, err := f.toVersioned(patchObjUnversioned)
+	if err != nil {
+		return nil, fmt.Errorf("failed to convert prepared patch object to proper version: %w", err)
+	}
+	preparedPatchObjTyped, err := f.typeConverter.ObjectToTyped(preparedPatchObjVersioned)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create typed patch object: %v", err)
+	}
+
+	return preparedPatchObjTyped, nil
 }
